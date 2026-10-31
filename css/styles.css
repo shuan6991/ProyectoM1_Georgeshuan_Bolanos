@@ -9,7 +9,7 @@
     --gris: #F0F0F0;
     --negro: #262626;
     --negro-claro: #424242;
-    --verde: #14cc33;
+    --verde: #1ea134;
 }
 
 /* Reset Basico */
@@ -212,8 +212,8 @@ a {
 
 .mensaje{
     position: fixed;
-    right: 1rem;
-    top: 10%;
+    left: 45%;
+    top: 65%;
     background-color: var(--verde);
     color: var(--blanco);
     padding: 1rem;
