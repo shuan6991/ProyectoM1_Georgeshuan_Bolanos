@@ -183,7 +183,7 @@ a {
     text-align: center;
 }
 
-@media(max-width: 768px){
+@media(max-width: 480px){
 
     .contenedor-radio{
         grid-template-columns: repeat(2, 1fr);
@@ -212,6 +212,7 @@ a {
 .contenedor-paleta {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
 }
 
@@ -220,6 +221,12 @@ a {
     height: 20rem;
     border: solid 1px var(--negro-claro);
     position: relative;
+}
+
+@media(max-width: 768px){
+ .color-paleta{
+    flex: 0 1 calc(33.333%);
+ }
 }
 
 .nombre-color {
