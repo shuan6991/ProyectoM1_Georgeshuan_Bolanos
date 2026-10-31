@@ -179,13 +179,17 @@ a {
     justify-content: space-evenly;
 }
 
+.radio{
+    text-align: center;
+}
+
 @media(max-width: 768px){
 
     .contenedor-radio{
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .radio-9-colores{
+    .radio:last-child{
         grid-column: 1 / 3;
     }
 }
