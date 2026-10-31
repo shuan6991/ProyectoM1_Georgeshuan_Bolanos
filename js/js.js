@@ -85,8 +85,6 @@ function colorAleatorios(tipo, cantidad) {
 
     let colores = []
 
- 
-
     if(cantidad === undefined && tipo === undefined){
         cantidad = 6
         tipo = 'Hexa'
