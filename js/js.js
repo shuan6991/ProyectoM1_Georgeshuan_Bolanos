@@ -5,6 +5,8 @@ const form = document.querySelector('.form-main')
 const paleta = document.querySelector('.paleta-colores')
 const body = document.querySelector('body')
 
+const coloresBloqueados = []
+
 
 
 //Evento del DOM
@@ -85,22 +87,24 @@ function colorAleatorios(tipo, cantidad) {
 
     let colores = []
 
-    if(cantidad === undefined && tipo === undefined){
+    if (cantidad === undefined && tipo === undefined) {
         cantidad = 6
         tipo = 'Hexa'
     }
 
 
-    console.log(tipo)
-
     for (let i = 0; i < cantidad; i++) {
 
-        if (tipo === "Hexa") {
-            colores = [...colores, generarColorHexa()]
-        } else if (tipo === "RGB") {
-            colores = [...colores, generarColoresRGB()]
+       if (coloresBloqueados[i]) {
+            colores.push(coloresBloqueados[i])
         } else {
-            colores = [...colores, generarColoresHSL()]
+            if (tipo === "Hexa") {
+                colores.push(generarColorHexa())
+            } else if (tipo === "RGB") {
+                colores.push(generarColoresRGB())
+            } else {
+                colores.push(generarColoresHSL())
+            }
         }
 
     }
@@ -121,7 +125,7 @@ function insersionHtml(colores, tipo) {
             <h3>Paleta de colores ${tipo}</h3>
 
             <div class="contenedor-paleta">
-                ${colores.map(color => {
+                ${colores.map((color, index) => {
 
             let formatoColor = color
 
@@ -131,20 +135,32 @@ function insersionHtml(colores, tipo) {
                 formatoColor = `hsl(${color})`
             }
 
+            const esBloqueado = coloresBloqueados[index] ? 'bloqueado' : '';
+
             return `                  
-                    <div class="color-paleta" style="background-color: ${formatoColor} ; padding: 2rem;">
+                 <div class="color-paleta ${esBloqueado}" style="background-color: ${formatoColor} ; padding: 2rem;">
                         <p class='nombre-color'>${color}</p>
-                    </div>         
+                    </div>       
+                    
        
                  `}).join('')}
             </div>
         
         `
         const nombreColor = document.querySelectorAll(".nombre-color")
+        const colorSelected = document.querySelectorAll(".color-paleta")
 
         nombreColor.forEach(nombre => {
             nombre.addEventListener('click', () => {
+                e.stopPropagation()
                 copiarPapeles(nombre.textContent)
+            })
+        })
+
+
+        colorSelected.forEach((color, index) => {
+            color.addEventListener('click', () => {
+                blockColor(colores, index, color)
             })
         })
 
@@ -179,3 +195,14 @@ async function copiarPapeles(nombreColor) {
     }
 }
 
+function blockColor(colores, index, color) {
+
+    if (coloresBloqueados[index]) {
+        delete coloresBloqueados[index]
+        color.classList.remove('bloqueado')
+    } else {
+        coloresBloqueados[index] = colores[index]
+        color.classList.add('bloqueado')
+    }
+
+}
