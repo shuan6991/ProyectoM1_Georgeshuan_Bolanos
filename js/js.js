@@ -1,43 +1,79 @@
-//Variables
 
+// Variables
 const boton = document.querySelector('.boton-submit')
 const form = document.querySelector('.form-main')
 const paleta = document.querySelector('.paleta-colores')
 const body = document.querySelector('body')
 
-const coloresBloqueados = []
+// Recuperar información de localStorage
+const datosGuardados = JSON.parse(
+    localStorage.getItem('paletasColores')
+) || {
+    paletas: {},
+    bloqueados: {}
+}
+
+// Paletas y colores bloqueados
+const paletasGuardadas = datosGuardados.paletas
+const coloresBloqueados = datosGuardados.bloqueados
 
 
+// Guardar información en localStorage
+function guardarLocalStorage() {
 
-//Evento del DOM
+    localStorage.setItem('paletasColores', JSON.stringify({
+        paletas: paletasGuardadas,
+        bloqueados: coloresBloqueados
+    }))
+
+}
+
+
+// Evento del DOM
 document.addEventListener('DOMContentLoaded', () => {
+
     setInterval(() => {
         boton.style.backgroundColor = generarColorHexa()
     }, 1000)
 
     datosForm()
-    colorAleatorios()
-    generarColoresRGB()
+
+    const tipoInicial = form.querySelector('[name="tipo"]').value
+
+    mostrarPaleta(tipoInicial)
 
 })
 
 
-//Funcion para obtener datos del formulario
+// Obtener datos del formulario
 function datosForm() {
+
+    const selectorTipo = form.querySelector('[name="tipo"]')
+
+    // Cuando cambia el formato, recuperar su paleta
+    selectorTipo.addEventListener('change', () => {
+
+        mostrarPaleta(selectorTipo.value)
+
+    })
+
     form.addEventListener('submit', e => {
+
         e.preventDefault()
 
         const data = new FormData(form)
+
         const tipo = data.get('tipo')
-        const cantidad = data.get('cantidad')
+        const cantidad = Number(data.get('cantidad'))
 
         colorAleatorios(tipo, cantidad)
+
     })
+
 }
 
 
-
-//Funcion para generar colores Hexadecimales
+// Generar colores HEXA
 function generarColorHexa() {
 
     const hexa = "0123456789ABCDEF"
@@ -46,171 +82,266 @@ function generarColorHexa() {
 
     for (let i = 0; i < 6; i++) {
 
-        //Contatenacion de los colores
-        color += hexa[Math.floor(Math.random(hexa) * 16)]
+        color += hexa[Math.floor(Math.random() * 16)]
+
     }
 
     return color
+
 }
 
 
-//Funcion para obtener colores RGB
+// Generar colores RGB
 function generarColoresRGB() {
 
     let rgb = ''
+
     for (let i = 0; i < 3; i++) {
-        rgb += Math.floor(Math.random() * 255) + ','
+
+        rgb += Math.floor(Math.random() * 256) + ','
 
     }
-    return rgb = rgb.slice(0, -1)
+
+    return rgb.slice(0, -1)
+
 }
 
 
+// Generar colores HSL
 function generarColoresHSL() {
-    let h = Math.floor(Math.random() * 360);
-    let s = Math.floor(Math.random() * 100);
-    let l = Math.floor(Math.random() * 100);
 
-    let hsl = `${h}, ${s}%, ${l}%`
+    let h = Math.floor(Math.random() * 360)
+    let s = Math.floor(Math.random() * 100)
+    let l = Math.floor(Math.random() * 100)
 
-    return hsl
-
+    return `${h}, ${s}%, ${l}%`
 
 }
 
 
-
-
-//Funcion para generar los colores deacuerdo a la cantidad y el tipo seleccionado
-
+// Generar colores según el formato y la cantidad
 function colorAleatorios(tipo, cantidad) {
 
-    let colores = []
+    const colores = []
 
-    if (cantidad === undefined && tipo === undefined) {
-        cantidad = 6
-        tipo = 'Hexa'
-    }
+    // Recuperar colores anteriores de ese formato
+    const coloresAnteriores = paletasGuardadas[tipo] || []
 
+    // Recuperar colores bloqueados de ese formato
+    const bloqueados = coloresBloqueados[tipo] || []
 
     for (let i = 0; i < cantidad; i++) {
 
-        if (coloresBloqueados[i]) {
-            colores.push(coloresBloqueados[i])
+        // Si el color está bloqueado, conservarlo
+        if (bloqueados[i] && coloresAnteriores[i]) {
+
+            colores.push(coloresAnteriores[i])
+
         } else {
-            if (tipo === "Hexa") {
+
+            // Generar un nuevo color
+            if (tipo === 'Hexa') {
+
                 colores.push(generarColorHexa())
-            } else if (tipo === "RGB") {
+
+            } else if (tipo === 'RGB') {
+
                 colores.push(generarColoresRGB())
+
             } else {
+
                 colores.push(generarColoresHSL())
+
             }
+
         }
 
     }
 
+    // Actualizar la paleta del formato seleccionado
+    paletasGuardadas[tipo] = colores
+
+    guardarLocalStorage()
+
     insersionHtml(colores, tipo)
+
 }
 
 
-//Funcion para insertar los colores en el html
+// Recuperar una paleta guardada
+function mostrarPaleta(tipo) {
+
+    if (paletasGuardadas[tipo] && paletasGuardadas[tipo].length) {
+
+        insersionHtml(paletasGuardadas[tipo], tipo)
+
+    } else {
+
+        const cantidad = Number(
+            form.querySelector('[name="cantidad"]').value
+        ) || 6
+
+        colorAleatorios(tipo, cantidad)
+
+    }
+
+}
+
+
+// Insertar los colores en el HTML
 function insersionHtml(colores, tipo) {
 
-
-    //se valida que el arreglo teng algo
     if (colores.length) {
 
-        // se insertan los colores
+        const bloqueados = coloresBloqueados[tipo] || []
 
         paleta.innerHTML = `
             <h3>Paleta de colores ${tipo}</h3>
 
             <div class="contenedor-paleta">
+
                 ${colores.map((color, index) => {
 
             let formatoColor = color
 
             if (tipo === 'RGB') {
                 formatoColor = `rgb(${color})`
-            } else if (tipo === "HSL") {
+            } else if (tipo === 'HSL') {
                 formatoColor = `hsl(${color})`
             }
 
-            const esBloqueado = coloresBloqueados[index] ? 'bloqueado' : '';
+            const esBloqueado = bloqueados[index]
+                ? 'bloqueado'
+                : ''
 
-            return `                  
-                 <div class="color-paleta ${esBloqueado}" style="background-color: ${formatoColor} ; padding: 2rem;">  
-                        <img class='icono-abierto' src='img/candado-abierto.png'/> 
-                        <img class='icono-cerrado' src='img/candado-cerrado.png'/>                   
-                        <p class='nombre-color'>${color}</p>
-                        <img class='copiar-color' src='img/copiar.png'/> 
-                    </div>       
-                    
-       
-                 `}).join('')}
+            return `
+                        <div
+                            class="color-paleta ${esBloqueado}"
+                            style="background-color: ${formatoColor}; padding: 2rem;"
+                        >
+
+                            <img
+                                class="icono-abierto"
+                                src="img/candado-abierto.png"
+                            />
+
+                            <img
+                                class="icono-cerrado"
+                                src="img/candado-cerrado.png"
+                            />
+
+                            <p class="nombre-color">${color}</p>
+
+                            <img
+                                class="copiar-color"
+                                src="img/copiar.png"
+                            />
+
+                        </div>
+                    `
+
+        }).join('')}
+
             </div>
-        
         `
-        const copiarColor = document.querySelectorAll(".copiar-color")
-        const colorSelected = document.querySelectorAll(".color-paleta")
 
-        copiarColor.forEach(copiarNombre  => {
-            copiarNombre .addEventListener('click', e => {
+        // Evento para copiar colores
+        const copiarColor = document.querySelectorAll('.copiar-color')
+
+        copiarColor.forEach(copiarNombre => {
+
+            copiarNombre.addEventListener('click', e => {
+
                 e.stopPropagation()
 
                 const nombre = copiarNombre.previousElementSibling
+
                 copiarPapeles(nombre.textContent)
+
             })
+
         })
 
+
+        // Evento para bloquear colores
+        const colorSelected = document.querySelectorAll('.color-paleta')
 
         colorSelected.forEach((color, index) => {
+
             color.addEventListener('click', () => {
-                blockColor(colores, index, color)
+
+                blockColor(colores, tipo, index, color)
+
             })
+
         })
 
-
     } else {
+
         paleta.innerHTML = `
-            <h2 class="paleta-titulo">Escoge el tipo de los colores y el tamaño</h2>
-         
-         `
+            <h2 class="paleta-titulo">
+                Escoge el tipo de los colores y el tamaño
+            </h2>
+        `
+
     }
+
 }
 
 
+// Copiar colores
 async function copiarPapeles(nombreColor) {
 
-    console.log(nombreColor)
-
-    const mensaje = document.createElement('P')
+    const mensaje = document.createElement('p')
 
     try {
+
         await navigator.clipboard.writeText(nombreColor)
 
         mensaje.classList.add('mensaje')
         mensaje.textContent = 'Copiado en el portapapeles'
+
         body.appendChild(mensaje)
 
         setTimeout(() => {
-            body.removeChild(mensaje)
+
+            mensaje.remove()
+
         }, 3000)
 
-
     } catch (error) {
-        console.error('error al copiar el color')
+
+        console.error('Error al copiar el color', error)
+
     }
+
 }
 
-function blockColor(colores, index, color) {
 
-    if (coloresBloqueados[index]) {
-        delete coloresBloqueados[index]
-        color.classList.remove('bloqueado')
-    } else {
-        coloresBloqueados[index] = colores[index]
-        color.classList.add('bloqueado')
+// Bloquear y desbloquear colores
+function blockColor(tipo, index, color) {
+
+    // Crear arreglo si todavía no existe
+    if (!coloresBloqueados[tipo]) {
+
+        coloresBloqueados[tipo] = []
+
     }
+
+    if (coloresBloqueados[tipo][index]) {
+
+        delete coloresBloqueados[tipo][index]
+
+        color.classList.remove('bloqueado')
+
+    } else {
+
+        coloresBloqueados[tipo][index] = true
+
+        color.classList.add('bloqueado')
+
+    }
+
+    guardarLocalStorage()
 
 }
