@@ -78,8 +78,31 @@ Se utilizo Gemini para correccion de errores en el codigo y explicacion de codig
 
 ## 7. Flujo de la aplicación
 
+### 1. Pantalla inicial y tipo de paleta donde muestra colores iniciales en cada tipo
+
+![Inicio](gifs/inicio.gif)
+
+### 2. Se escoge el tipo y el tamañode la paleta y se le da en el boton generar paleta, la paleta se mostrara en la parte de abajo
+
+![Tamaño de la paleta](gifs/tamañoPaleta.gif)
 
 
+### 2. Bloqueo de color, si se desea bloquear un color que nos gusto le damos en el candado abierto, el candado cambiara a un candado cerrado y si generamos otra paleta el color seguira mostrandose
+
+![Bloqueo de color](gifs/bloqueo.gif)
+
+
+### 3. Copiado en el portapapeles, si damos clic en el icono de copiar se copiara el color y mostrara un mensaje de color copiado
+
+![copiado de color](gifs/portapapeles.gif)
+
+### 4. colores persistentes, las ultimas paletas generadas de cada tipo se guardan en localStorage lo que permite ver las paletas asi recargue la pagina o halla cambiado de tipo
+
+![colores persistentes](gifs/coloresPersistentes.gif)
+
+### 5. diseño responsive, la aplicacion se adapta a diseño de celular o tablet en caso de que la quieras ver en uno de esos dispositivos
+
+![Diseño responsive](gifs/responsive.gif)
 
 ## 8. Estructura del proyecto
 
@@ -101,4 +124,4 @@ ProyectoM1_Georgeshuan_Bolanos/
 
 Proyecto: Chromatik Color  
 Tecnologías: HTML, CSS y JavaScript  
-**Tipo:** Aplicación web estática
+Tipo: Aplicación web estática
