@@ -237,33 +237,37 @@ a {
     background-color: var(--gris);
     padding: 5px;
     border-radius: 5px;
-
+    cursor: pointer;
 }
 
-.incono-copiar {
-    width: 3rem;
+.copiar-color {
     position: absolute;
+    width: 3rem;
     right: 5px;
     bottom: 15px;
-    cursor: pointer;
-    padding: 2px;
     background-color: var(--gris);
+    padding: 2px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .icono-abierto,
 .icono-cerrado {
-    width: 3rem;
     position: absolute;
+    width: 3rem;
     right: 5px;
     top: 15px;
-    cursor: pointer;
-     padding: 2px;
     background-color: var(--gris);
+    padding: 2px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
+.nombre-color:hover {
+    background-color: var(--negro-claro);
+    color: var(--blanco);
 
+}
 
 /*Mensajes*/
 

@@ -116,6 +116,7 @@ function colorAleatorios(tipo, cantidad) {
 //Funcion para insertar los colores en el html
 function insersionHtml(colores, tipo) {
 
+
     //se valida que el arreglo teng algo
     if (colores.length) {
 
@@ -138,11 +139,11 @@ function insersionHtml(colores, tipo) {
             const esBloqueado = coloresBloqueados[index] ? 'bloqueado' : '';
 
             return `                  
-                 <div class="color-paleta ${esBloqueado}" style="background-color: ${formatoColor} ; padding: 2rem;">
-                        <img class='icono-abierto' src="img/candado-abierto.png" />
-                        <img class='icono-cerrado' src="img/candado-cerrado.png" />
+                 <div class="color-paleta ${esBloqueado}" style="background-color: ${formatoColor} ; padding: 2rem;">  
+                        <img class='icono-abierto' src='img/candado-abierto.png'/> 
+                        <img class='icono-cerrado' src='img/candado-cerrado.png'/>                   
                         <p class='nombre-color'>${color}</p>
-                        <img class='incono-copiar' src="img/copiar.png" />
+                        <img class='copiar-color' src='img/copiar.png'/> 
                     </div>       
                     
        
@@ -150,12 +151,14 @@ function insersionHtml(colores, tipo) {
             </div>
         
         `
-        const nombreColor = document.querySelectorAll(".nombre-color")
+        const copiarColor = document.querySelectorAll(".copiar-color")
         const colorSelected = document.querySelectorAll(".color-paleta")
 
-        nombreColor.forEach(nombre => {
-            nombre.addEventListener('click', () => {
+        copiarColor.forEach(copiarNombre  => {
+            copiarNombre .addEventListener('click', e => {
                 e.stopPropagation()
+
+                const nombre = copiarNombre.previousElementSibling
                 copiarPapeles(nombre.textContent)
             })
         })
@@ -178,6 +181,8 @@ function insersionHtml(colores, tipo) {
 
 
 async function copiarPapeles(nombreColor) {
+
+    console.log(nombreColor)
 
     const mensaje = document.createElement('P')
 
