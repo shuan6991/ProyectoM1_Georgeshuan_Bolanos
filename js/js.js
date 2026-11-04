@@ -223,11 +223,13 @@ function insersionHtml(colores, tipo) {
                             <img
                                 class="icono-abierto"
                                 src="img/candado-abierto.png"
+                                style="display: ${esBloqueado ? 'none' : 'block'}"
                             />
 
                             <img
                                 class="icono-cerrado"
                                 src="img/candado-cerrado.png"
+                                style="display: ${esBloqueado ? 'block' : 'none'}"s
                             />
 
                             <p class="nombre-color">${color}</p>
@@ -263,14 +265,24 @@ function insersionHtml(colores, tipo) {
         })
 
 
-        // Evento para bloquear colores
         const colorSelected = document.querySelectorAll('.color-paleta')
 
+        // Evento para bloquear colores
         colorSelected.forEach((color, index) => {
 
-            color.addEventListener('click', () => {
+            const candadoAbierto = color.querySelector('.icono-abierto')
+            const candadoCerrado = color.querySelector('.icono-cerrado')
 
-                blockColor(colores, tipo, index, color)
+            candadoAbierto.addEventListener('click', (e) => {
+                e.stopPropagation()
+                blockColor(tipo, index, color)
+
+            })
+
+            candadoCerrado.addEventListener('click', (e) => {
+
+                e.stopPropagation()
+                blockColor(tipo, index, color)
 
             })
 
@@ -318,30 +330,45 @@ async function copiarPapeles(nombreColor) {
 }
 
 
-// Bloquear y desbloquear colores
-function blockColor(tipo, index, color) {
+function blockColor(tipo, index, elemento) {
 
-    // Crear arreglo si todavía no existe
     if (!coloresBloqueados[tipo]) {
-
         coloresBloqueados[tipo] = []
-
     }
 
-    if (coloresBloqueados[tipo][index]) {
+    const bloqueado = coloresBloqueados[tipo][index]
+
+    if (bloqueado) {
 
         delete coloresBloqueados[tipo][index]
-
-        color.classList.remove('bloqueado')
 
     } else {
 
         coloresBloqueados[tipo][index] = true
 
-        color.classList.add('bloqueado')
+    }
+
+    // Seleccionar los candados
+    const candadoAbierto = elemento.querySelector('.icono-abierto')
+    const candadoCerrado = elemento.querySelector('.icono-cerrado')
+
+    // Cambiar imágenes
+    if (bloqueado) {
+
+        candadoAbierto.style.display = 'block'
+        candadoCerrado.style.display = 'none'
+
+    } else {
+
+        candadoAbierto.style.display = 'none'
+        candadoCerrado.style.display = 'block'
 
     }
 
+    // Agregar o quitar clase
+    elemento.classList.toggle('bloqueado', !bloqueado)
+
+    // Guardar cambios
     guardarLocalStorage()
 
 }
