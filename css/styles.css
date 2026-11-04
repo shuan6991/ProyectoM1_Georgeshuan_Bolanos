@@ -263,6 +263,10 @@ a {
     cursor: pointer;
 }
 
+.icono-cerrado{
+    width: 3.5rem;
+}
+
 .nombre-color:hover {
     background-color: var(--negro-claro);
     color: var(--blanco);
