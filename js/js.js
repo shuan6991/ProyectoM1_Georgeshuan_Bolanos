@@ -95,7 +95,7 @@ function colorAleatorios(tipo, cantidad) {
 
     for (let i = 0; i < cantidad; i++) {
 
-       if (coloresBloqueados[i]) {
+        if (coloresBloqueados[i]) {
             colores.push(coloresBloqueados[i])
         } else {
             if (tipo === "Hexa") {
@@ -139,7 +139,10 @@ function insersionHtml(colores, tipo) {
 
             return `                  
                  <div class="color-paleta ${esBloqueado}" style="background-color: ${formatoColor} ; padding: 2rem;">
+                        <img class='icono-abierto' src="img/candado-abierto.png" />
+                        <img class='icono-cerrado' src="img/candado-cerrado.png" />
                         <p class='nombre-color'>${color}</p>
+                        <img class='incono-copiar' src="img/copiar.png" />
                     </div>       
                     
        
