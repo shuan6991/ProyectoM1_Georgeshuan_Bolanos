@@ -8,9 +8,7 @@ La aplicación también permite copiar el valor de un color al portapapeles y bl
 
 ## 2. Link del despliegue
 
-**URL de la aplicación:** pendiente de publicar.
-
-Cuando se realice el despliegue, reemplaza este texto por el enlace público. Una alternativa sencilla para este proyecto estático es GitHub Pages.
+https://shuan6991.github.io/ProyectoM1_Georgeshuan_Bolanos/
 
 
 ### Requisitos
@@ -19,7 +17,7 @@ Cuando se realice el despliegue, reemplaza este texto por el enlace público. Un
 
 ### Ejecución
 
-1. Descarga o clona este repositorio.
+Abre el link de despliegue, selecciona un tipo de paleta y un tamaño y se te generara una paleta de colores aleatoria, ademas podras copiar el color y bloquearlo en caso de ser necesario
 
 
 ## 3. Pasos para realizar el despliegue
@@ -65,7 +63,7 @@ Cuando se realice el despliegue, reemplaza este texto por el enlace público. Un
 - Incorporar un botón para copiar todos los colores de una paleta.
 - Añadir nombres descriptivos y contraste de texto para mejorar la accesibilidad.
 - Permitir guardar varias paletas favoritas y cambiarles el nombre.
-- Agregar pruebas para validar la generación y conversión de los formatos de color.
+
 
 ## 6. Documentación de uso de IA
 
