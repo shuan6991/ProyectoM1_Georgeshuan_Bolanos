@@ -73,6 +73,7 @@ Se utilizo Gemini para correccion de errores en el codigo y explicacion de codig
 
 ![promp de IA](capturas/promp-1.png)
 ![promp de IA](capturas/promp-2.png)
+![promp de IA](capturas/promp-3.png)
 
 ## 7. Flujo de la aplicación
 
