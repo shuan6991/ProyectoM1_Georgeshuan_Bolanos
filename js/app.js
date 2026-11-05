@@ -258,12 +258,14 @@ function insersionHtml(colores, tipo) {
 
                             <img
                                 class="icono-abierto"
+                                title="Bloquear color"  
                                 src="img/candado-abierto.png"
                                 style="display: ${esBloqueado ? 'none' : 'block'}"
                             />
 
                             <img
                                 class="icono-cerrado"
+                                title="Desbloquear color"                            
                                 src="img/candado-cerrado.png"
                                 style="display: ${esBloqueado ? 'block' : 'none'}"s
                             />
@@ -272,6 +274,7 @@ function insersionHtml(colores, tipo) {
 
                             <img
                                 class="copiar-color"
+                                title="Copiar color"
                                 src="img/copiar.png"
                             />
 
