@@ -5,7 +5,7 @@ const form = document.querySelector('.form-main')
 const paleta = document.querySelector('.paleta-colores')
 const body = document.querySelector('body')
 
-// Recuperar información de localStorage
+// Obteniendo información guardada en localStorage
 const datosGuardados = JSON.parse(
     localStorage.getItem('paletasColores')
 ) || {
@@ -13,12 +13,12 @@ const datosGuardados = JSON.parse(
     bloqueados: {}
 }
 
-// Paletas y colores bloqueados
+//Objetos de paletas y colores bloqueados
 const paletasGuardadas = datosGuardados.paletas
 const coloresBloqueados = datosGuardados.bloqueados
 
 
-// Guardar información en localStorage
+// Funcion para guardar información en localStorage
 function guardarLocalStorage() {
 
     localStorage.setItem('paletasColores', JSON.stringify({
@@ -29,7 +29,7 @@ function guardarLocalStorage() {
 }
 
 
-// Evento del DOM
+// Eventos del DOM
 document.addEventListener('DOMContentLoaded', () => {
 
     setInterval(() => {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
-// Obtener datos del formulario
+//Funcion para obtener datos del formulario
 function datosForm() {
 
     const selectorTipo = form.querySelector('[name="tipo"]')
@@ -78,7 +78,7 @@ function datosForm() {
 }
 
 
-// Generar colores HEXA
+//Fucion para generar colores HEXA
 function generarColorHexa() {
 
     const hexa = "0123456789ABCDEF"
@@ -96,7 +96,7 @@ function generarColorHexa() {
 }
 
 
-// Generar colores RGB
+//Funcion para generar colores RGB
 function generarColoresRGB() {
 
     let rgb = ''
@@ -112,7 +112,7 @@ function generarColoresRGB() {
 }
 
 
-// Generar colores HSL
+// Funcion para generar colores HSL
 function generarColoresHSL() {
 
     let h = Math.floor(Math.random() * 360)
@@ -124,15 +124,13 @@ function generarColoresHSL() {
 }
 
 
-// Generar colores según el formato y la cantidad
+//Funcion para generar colores según el formato y la cantidad
 function colorAleatorios(tipo, cantidad) {
 
     const colores = []
 
-    // Recuperar colores anteriores de ese formato
     const coloresAnteriores = paletasGuardadas[tipo] || []
-
-    // Recuperar colores bloqueados de ese formato
+  
     const bloqueados = coloresBloqueados[tipo] || []
 
     for (let i = 0; i < cantidad; i++) {
@@ -144,7 +142,7 @@ function colorAleatorios(tipo, cantidad) {
 
         } else {
 
-            // Generar un nuevo color
+         
             if (tipo === 'Hexa') {
 
                 colores.push(generarColorHexa())
@@ -186,6 +184,8 @@ function mostrarPaleta(tipo, cantidadLocal) {
 
 }
 
+
+//Funcion para ajustar el tamaño seleccionado en todos los tipos
 function coloresFaltantes(colores, tipo, cantidad) {  
 
     const bloqueados = coloresBloqueados[tipo] || []
@@ -224,7 +224,7 @@ function coloresFaltantes(colores, tipo, cantidad) {
 
 }
 
-// Insertar los colores en el HTML
+//Funcion para Insertar los colores en el HTML
 function insersionHtml(colores, tipo) {
 
     if (colores.length) {
@@ -337,7 +337,7 @@ function insersionHtml(colores, tipo) {
 }
 
 
-// Copiar colores
+// Funcion para Copiar colores
 async function copiarPapeles(nombreColor) {
 
     const mensaje = document.createElement('p')
@@ -365,7 +365,7 @@ async function copiarPapeles(nombreColor) {
 
 }
 
-
+//Funcion para bloquerar colores
 function blockColor(tipo, index, elemento) {
 
     if (!coloresBloqueados[tipo]) {
@@ -384,11 +384,11 @@ function blockColor(tipo, index, elemento) {
 
     }
 
-    // Seleccionar los candados
+    // Seleccionar iconos de candados
     const candadoAbierto = elemento.querySelector('.icono-abierto')
     const candadoCerrado = elemento.querySelector('.icono-cerrado')
 
-    // Cambiar imágenes
+  
     if (bloqueado) {
 
         candadoAbierto.style.display = 'block'
@@ -404,7 +404,6 @@ function blockColor(tipo, index, elemento) {
     // Agregar o quitar clase
     elemento.classList.toggle('bloqueado', !bloqueado)
 
-    // Guardar cambios
     guardarLocalStorage()
 
 }
