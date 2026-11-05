@@ -277,8 +277,8 @@ a {
 
 .mensaje {
     position: fixed;
-    left: 45%;
-    top: 65%;
+    right: 2%;
+    top: 10%;
     background-color: var(--verde);
     color: var(--blanco);
     padding: 1rem;

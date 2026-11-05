@@ -73,6 +73,8 @@ function datosForm() {
 
         colorAleatorios(tipo, cantidad)
 
+        mensajes('Paleta generada correctamente')
+
     })
 
 }
@@ -130,7 +132,7 @@ function colorAleatorios(tipo, cantidad) {
     const colores = []
 
     const coloresAnteriores = paletasGuardadas[tipo] || []
-  
+
     const bloqueados = coloresBloqueados[tipo] || []
 
     for (let i = 0; i < cantidad; i++) {
@@ -142,7 +144,7 @@ function colorAleatorios(tipo, cantidad) {
 
         } else {
 
-         
+
             if (tipo === 'Hexa') {
 
                 colores.push(generarColorHexa())
@@ -186,7 +188,7 @@ function mostrarPaleta(tipo, cantidadLocal) {
 
 
 //Funcion para ajustar el tamaño seleccionado en todos los tipos
-function coloresFaltantes(colores, tipo, cantidad) {  
+function coloresFaltantes(colores, tipo, cantidad) {
 
     const bloqueados = coloresBloqueados[tipo] || []
 
@@ -342,28 +344,13 @@ function insersionHtml(colores, tipo) {
 
 // Funcion para Copiar colores
 async function copiarPapeles(nombreColor) {
-
-    const mensaje = document.createElement('p')
-
     try {
-
         await navigator.clipboard.writeText(nombreColor)
-
-        mensaje.classList.add('mensaje')
-        mensaje.textContent = 'Copiado en el portapapeles'
-
-        body.appendChild(mensaje)
-
-        setTimeout(() => {
-
-            mensaje.remove()
-
-        }, 3000)
+        mensajes('Color copiado en el portapapeles')
 
     } catch (error) {
 
         console.error('Error al copiar el color', error)
-
     }
 
 }
@@ -391,7 +378,7 @@ function blockColor(tipo, index, elemento) {
     const candadoAbierto = elemento.querySelector('.icono-abierto')
     const candadoCerrado = elemento.querySelector('.icono-cerrado')
 
-  
+
     if (bloqueado) {
 
         candadoAbierto.style.display = 'block'
@@ -409,4 +396,20 @@ function blockColor(tipo, index, elemento) {
 
     guardarLocalStorage()
 
+}
+
+function mensajes(mensajeObtenido) {
+    const mensaje = document.createElement('p')
+
+
+    mensaje.classList.add('mensaje')
+    mensaje.textContent = mensajeObtenido
+
+    body.appendChild(mensaje)
+
+    setTimeout(() => {
+
+        mensaje.remove()
+
+    }, 3000)
 }
