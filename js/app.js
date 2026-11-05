@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     datosForm()
 
     const tipoInicial = form.querySelector('[name="tipo"]').value
+    const cantidadInicial = Number(localStorage.getItem('cantidad')) || 6
 
-    mostrarPaleta(tipoInicial)
+    mostrarPaleta(tipoInicial, cantidadInicial)
 
 })
 
@@ -50,10 +51,12 @@ function datosForm() {
 
     const selectorTipo = form.querySelector('[name="tipo"]')
 
-    // Cuando cambia el formato, recuperar su paleta
+
     selectorTipo.addEventListener('change', () => {
 
-        mostrarPaleta(selectorTipo.value)
+        const cantidad = localStorage.getItem('cantidad') || 6
+
+        mostrarPaleta(selectorTipo.value, cantidad)
 
     })
 
@@ -65,6 +68,8 @@ function datosForm() {
 
         const tipo = data.get('tipo')
         const cantidad = Number(data.get('cantidad'))
+
+        localStorage.setItem('cantidad', cantidad)
 
         colorAleatorios(tipo, cantidad)
 
@@ -169,24 +174,55 @@ function colorAleatorios(tipo, cantidad) {
 
 
 // Recuperar una paleta guardada
-function mostrarPaleta(tipo) {
+function mostrarPaleta(tipo, cantidadLocal) {
 
     if (paletasGuardadas[tipo] && paletasGuardadas[tipo].length) {
-
-        insersionHtml(paletasGuardadas[tipo], tipo)
-
+        coloresFaltantes(paletasGuardadas[tipo], tipo, cantidadLocal)
     } else {
 
-        const cantidad = Number(
-            form.querySelector('[name="cantidad"]').value
-        ) || 6
-
-        colorAleatorios(tipo, cantidad)
+        colorAleatorios(tipo, cantidadLocal)
 
     }
 
 }
 
+function coloresFaltantes(colores, tipo, cantidad) {  
+
+    const bloqueados = coloresBloqueados[tipo] || []
+
+    for (let i = colores.length; i < cantidad; i++) {
+
+        if (bloqueados[i] && paletasGuardadas[tipo][i]) {
+
+            colores.push(paletasGuardadas[tipo][i])
+
+        } else {
+
+            if (tipo === 'Hexa') {
+
+                colores.push(generarColorHexa())
+
+            } else if (tipo === 'RGB') {
+
+                colores.push(generarColoresRGB())
+
+            } else {
+
+                colores.push(generarColoresHSL())
+
+            }
+
+        }
+
+    }
+
+    paletasGuardadas[tipo] = colores
+
+    guardarLocalStorage()
+
+    insersionHtml(colores, tipo)
+
+}
 
 // Insertar los colores en el HTML
 function insersionHtml(colores, tipo) {
